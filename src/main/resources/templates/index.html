@@ -12,39 +12,24 @@
         <title>Home - Car Accidents</title>
     </head>
     <body>
-        <div class="container-fluid p-0">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <div class="container">
-                    <a class="navbar-brand" href="/">Car Accidents</a>
-                    <div class="collapse navbar-collapse">
-                        <div class="navbar-nav me-auto">
-                            <a class="nav-item nav-link active" href="/">Home</a>
-                            <a class="nav-item nav-link" th:text="${user}">User name</a>
-                        </div>
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand" href="/">Car Accidents</a>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-item nav-link active" href="/">Home</a>
+                        <a class="nav-item nav-link" th:href="@{/accidents}">Accidents</a>
+                        <a class="nav-item nav-link" th:href="@{/createAccident}">Add accident</a>
                     </div>
                 </div>
             </nav>
-
-            <div class="container">
-                <div class="row">
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Text</th>
-                            <th scope="col">Address</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="accident: ${accidents}">
-                            <td th:text="${accident.id}" />
-                            <td th:text="${accident.name}"/>
-                            <td th:text="${accident.text}"/>
-                            <td th:text="${accident.address}"/>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="row pt-3">
+                <div class="card" style="width: 100%">
+                    <div class="card-header">
+                        Car Accident Project
+                    </div>
+                    <div class="card-body">
+                    </div>
                 </div>
             </div>
 
