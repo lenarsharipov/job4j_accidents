@@ -20,7 +20,7 @@ public class IndexController {
 
     @GetMapping({"/", "/index"})
     public String getIndex(Model model) {
-        model.addAttribute(USER_VALUE, USER_ATTRIBUTE);
+        model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
         model.addAttribute(ACCIDENTS_ATTRIBUTE, accidentService.findAll());
         return INDEX_PAGE;
     }

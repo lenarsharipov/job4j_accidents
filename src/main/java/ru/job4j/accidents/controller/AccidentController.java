@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.accidents.model.Accident;
+import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.service.AccidentService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @ThreadSafe
 @Controller
@@ -34,6 +38,11 @@ public class AccidentController {
      */
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
+        List<AccidentType> types = new ArrayList<>();
+        types.add(new AccidentType(1, "Two cars"));
+        types.add(new AccidentType(2, "Car and Pedestrian"));
+        types.add(new AccidentType(3, "Car and Bicycle"));
+        model.addAttribute("types", types);
         model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
         return CREATE_ACCIDENT_PAGE;
     }
@@ -57,6 +66,13 @@ public class AccidentController {
             model.addAttribute(MESSAGE, UNABLE_TO_FIND_BY_ID);
             return ERROR_404_PAGE;
         }
+        List<AccidentType> types = new ArrayList<>();
+        types.add(new AccidentType(1, "Two cars"));
+        types.add(new AccidentType(2, "Car and Pedestrian"));
+        types.add(new AccidentType(3, "Car and Bicycle"));
+        model.addAttribute("types", types);
+        model.addAttribute("selectedTypeId", accidentOptional.get().getType().getId());
+        System.out.println(accidentOptional.get().getType().getId());
         model.addAttribute(ACCIDENT_ATTRIBUTE, accidentOptional.get());
         model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
         return UPDATE_ACCIDENT_PAGE;
