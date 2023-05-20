@@ -9,11 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.service.AccidentService;
-
-import java.util.ArrayList;
-import java.util.List;
+import ru.job4j.accidents.service.AccidentTypeService;
 
 @ThreadSafe
 @Controller
@@ -21,6 +18,7 @@ import java.util.List;
 public class AccidentController {
 
     private final AccidentService accidentService;
+    private final AccidentTypeService accidentTypeService;
     private static final String MESSAGE = "message";
     private static final String USER_VALUE = "Lenar Sharipov";
     private static final String UNABLE_TO_UPDATE = "UNABLE TO UPDATE SPECIFIED ACCIDENT";
@@ -31,6 +29,8 @@ public class AccidentController {
     private static final String UPDATE_ACCIDENT_PAGE = "updateAccident";
     private static final String ACCIDENT_ATTRIBUTE = "accident";
     private static final String USER_ATTRIBUTE = "user";
+    private static final String TYPES_ATTRIBUTE = "types";
+    private static final String SELECTED_TYPE_ID = "selectedTypeId";
 
     /**
      * Get Accident creation page.
@@ -38,11 +38,7 @@ public class AccidentController {
      */
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
-        List<AccidentType> types = new ArrayList<>();
-        types.add(new AccidentType(1, "Two cars"));
-        types.add(new AccidentType(2, "Car and Pedestrian"));
-        types.add(new AccidentType(3, "Car and Bicycle"));
-        model.addAttribute("types", types);
+        model.addAttribute(TYPES_ATTRIBUTE, accidentTypeService.findAll());
         model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
         return CREATE_ACCIDENT_PAGE;
     }
@@ -66,13 +62,8 @@ public class AccidentController {
             model.addAttribute(MESSAGE, UNABLE_TO_FIND_BY_ID);
             return ERROR_404_PAGE;
         }
-        List<AccidentType> types = new ArrayList<>();
-        types.add(new AccidentType(1, "Two cars"));
-        types.add(new AccidentType(2, "Car and Pedestrian"));
-        types.add(new AccidentType(3, "Car and Bicycle"));
-        model.addAttribute("types", types);
-        model.addAttribute("selectedTypeId", accidentOptional.get().getType().getId());
-        System.out.println(accidentOptional.get().getType().getId());
+        model.addAttribute(TYPES_ATTRIBUTE, accidentTypeService.findAll());
+        model.addAttribute(SELECTED_TYPE_ID, accidentOptional.get().getType().getId());
         model.addAttribute(ACCIDENT_ATTRIBUTE, accidentOptional.get());
         model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
         return UPDATE_ACCIDENT_PAGE;
