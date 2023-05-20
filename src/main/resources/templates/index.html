@@ -18,20 +18,41 @@
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <a class="nav-item nav-link active" href="/">Home</a>
-                        <a class="nav-item nav-link" th:href="@{/accidents}">Accidents</a>
                         <a class="nav-item nav-link" th:href="@{/createAccident}">Add accident</a>
+                        <a class="nav-item nav-link" th:text="${user}" >User</a>
                     </div>
                 </div>
             </nav>
-            <div class="row pt-3">
-                <div class="card" style="width: 100%">
-                    <div class="card-header">
-                        Car Accident Project
-                    </div>
-                    <div class="card-body">
-                    </div>
+
+            <div class="container">
+                <div class="row">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Text</th>
+                            <th scope="col">Address</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="accident: ${accidents}">
+                            <td th:text="${accident.id}" />
+                            <td>
+                                <a th:href="@{|/formUpdateAccident?id=${accident.id}|}">
+                                    <i class="fa fa-edit"></i>
+                                    <span th:text="${accident.name}"></span>
+                                </a>
+                            </td>
+                            <td th:text="${accident.text}" />
+                            <td th:text="${accident.address}" />
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
+
+        </div>
 
         </div>
     </body>

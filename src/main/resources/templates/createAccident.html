@@ -18,8 +18,8 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
                 <a class="nav-item nav-link" href="/">Home</a>
-                <a class="nav-item nav-link" th:href="@{/accidents}">Accidents</a>
                 <a class="nav-item nav-link active" th:href="@{/createAccident}">Add accident</a>
+                <a class="nav-item nav-link" th:text="${user}" >User</a>
             </div>
         </div>
     </nav>
