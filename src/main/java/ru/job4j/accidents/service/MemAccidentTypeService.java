@@ -12,7 +12,7 @@ import java.util.Optional;
 @ThreadSafe
 @AllArgsConstructor
 @Service
-public class SimpleAccidentTypeMem implements AccidentTypeService {
+public class MemAccidentTypeService implements AccidentTypeService {
     private final AccidentTypeRepository accidentTypeRepository;
 
     @Override
