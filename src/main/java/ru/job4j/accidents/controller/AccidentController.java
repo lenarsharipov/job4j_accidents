@@ -9,8 +9,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.accidents.model.Accident;
+import ru.job4j.accidents.model.Rule;
 import ru.job4j.accidents.service.AccidentService;
 import ru.job4j.accidents.service.AccidentTypeService;
+import ru.job4j.accidents.service.RuleService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ThreadSafe
 @Controller
@@ -19,6 +27,7 @@ public class AccidentController {
 
     private final AccidentService accidentService;
     private final AccidentTypeService accidentTypeService;
+    private final RuleService ruleService;
     private static final String MESSAGE = "message";
     private static final String USER_VALUE = "Lenar Sharipov";
     private static final String UNABLE_TO_UPDATE = "UNABLE TO UPDATE SPECIFIED ACCIDENT";
@@ -30,7 +39,10 @@ public class AccidentController {
     private static final String ACCIDENT_ATTRIBUTE = "accident";
     private static final String USER_ATTRIBUTE = "user";
     private static final String TYPES_ATTRIBUTE = "types";
+    private static final String RULES = "rules";
+    private static final String R_IDS = "rIds";
     private static final String SELECTED_TYPE_ID = "selectedTypeId";
+    private static final String SELECTED_R_IDS = "selectedRIds";
 
     /**
      * Get Accident creation page.
@@ -38,9 +50,21 @@ public class AccidentController {
      */
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
+        model.addAttribute(RULES, ruleService.findAll());
         model.addAttribute(TYPES_ATTRIBUTE, accidentTypeService.findAll());
         model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
         return CREATE_ACCIDENT_PAGE;
+    }
+
+    private void addRIds(Accident accident, HttpServletRequest request) {
+        var rIds = request.getParameterValues(R_IDS);
+        var rules = new HashSet<Rule>();
+        for (var rId : rIds) {
+            var id = Integer.parseInt(rId);
+            var rule = ruleService.findById(id);
+            rules.add(rule.get());
+        }
+        accident.setRules(rules);
     }
 
     /**
@@ -49,9 +73,16 @@ public class AccidentController {
      * @return 404 or redirect:/accidents.
      */
     @PostMapping("/saveAccident")
-    public String save(@ModelAttribute Accident accident) {
+    public String save(@ModelAttribute Accident accident, HttpServletRequest request) {
+        addRIds(accident, request);
         accidentService.create(accident);
         return REDIRECT_INDEX_PAGE;
+    }
+
+    private List<Integer> getRIds(Set<Rule> rules) {
+        return rules.stream()
+                .map(Rule::getId)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/formUpdateAccident")
@@ -62,6 +93,9 @@ public class AccidentController {
             model.addAttribute(MESSAGE, UNABLE_TO_FIND_BY_ID);
             return ERROR_404_PAGE;
         }
+        var selectedIds = getRIds(accidentOptional.get().getRules());
+        model.addAttribute(SELECTED_R_IDS, selectedIds);
+        model.addAttribute(RULES, ruleService.findAll());
         model.addAttribute(TYPES_ATTRIBUTE, accidentTypeService.findAll());
         model.addAttribute(SELECTED_TYPE_ID, accidentOptional.get().getType().getId());
         model.addAttribute(ACCIDENT_ATTRIBUTE, accidentOptional.get());
@@ -70,7 +104,8 @@ public class AccidentController {
     }
 
     @PostMapping("/updateAccident")
-    public String update(Model model, @ModelAttribute Accident accident) {
+    public String update(Model model, @ModelAttribute Accident accident, HttpServletRequest request) {
+        addRIds(accident, request);
         if (!accidentService.update(accident)) {
             model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
             model.addAttribute(MESSAGE, UNABLE_TO_UPDATE);

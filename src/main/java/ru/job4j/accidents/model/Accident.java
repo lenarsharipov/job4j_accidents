@@ -5,6 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +18,13 @@ public class Accident {
 
     private String name;
     private AccidentType type;
+    private Set<Rule> rules;
     private String text;
     private String address;
+
+    public String rules() {
+        return rules.stream()
+                .map(Rule::getName)
+                .collect(Collectors.joining(", "));
+    }
 }
