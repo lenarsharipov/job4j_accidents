@@ -1,10 +1,13 @@
-package ru.job4j.accidents.repository;
+package ru.job4j.accidents.repository.mem;
 
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.accidents.model.Rule;
+import ru.job4j.accidents.repository.RuleRepository;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,28 +15,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Repository
 public class RuleMem implements RuleRepository {
     private final Map<Integer, Rule> rules = new ConcurrentHashMap<>();
-    private AtomicInteger ruleId = new AtomicInteger(1);
 
     public RuleMem() {
+        AtomicInteger ruleId = new AtomicInteger(1);
         rules.put(ruleId.get(), new Rule(ruleId.getAndIncrement(), "Rule 1"));
         rules.put(ruleId.get(), new Rule(ruleId.getAndIncrement(), "Rule 2"));
         rules.put(ruleId.get(), new Rule(ruleId.getAndIncrement(), "Rule 3"));
     }
 
     @Override
-    public Set<Rule> findSelected(String[] rIds) {
-        Set<Rule> rules = new HashSet<>();
-        for (var rId : rIds) {
-            var id = Integer.parseInt(rId);
-            var rule = findById(id);
-            rule.ifPresent(rules::add);
-        }
-        return rules;
-    }
-
-    @Override
-    public List<Rule> findAll() {
-        return new ArrayList<>(rules.values());
+    public Collection<Rule> findAll() {
+        return rules.values();
     }
 
     @Override

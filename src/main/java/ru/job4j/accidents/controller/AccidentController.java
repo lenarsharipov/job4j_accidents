@@ -63,7 +63,7 @@ public class AccidentController {
     @PostMapping("/saveAccident")
     public String save(@ModelAttribute Accident accident, HttpServletRequest request) {
         var rIds = request.getParameterValues(R_IDS);
-        accidentService.create(accident, rIds);
+        accidentService.save(accident, rIds);
         return REDIRECT_INDEX_PAGE;
     }
 
@@ -92,7 +92,9 @@ public class AccidentController {
     }
 
     @PostMapping("/updateAccident")
-    public String update(Model model, @ModelAttribute Accident accident, HttpServletRequest request) {
+    public String update(Model model,
+                         @ModelAttribute Accident accident,
+                         HttpServletRequest request) {
         var rIds = request.getParameterValues(R_IDS);
         if (!accidentService.update(accident, rIds)) {
             model.addAttribute(USER_ATTRIBUTE, USER_VALUE);

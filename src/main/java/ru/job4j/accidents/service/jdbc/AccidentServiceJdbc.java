@@ -1,34 +1,36 @@
-package ru.job4j.accidents.service;
+package ru.job4j.accidents.service.jdbc;
 
 import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.repository.AccidentRepository;
-import ru.job4j.accidents.repository.AccidentTypeRepository;
-import ru.job4j.accidents.repository.RuleRepository;
+import ru.job4j.accidents.repository.jdbc.AccidentJdbcTemplate;
+import ru.job4j.accidents.repository.jdbc.AccidentTypeJdbcTemplate;
+import ru.job4j.accidents.repository.jdbc.RuleJdbcTemplate;
+import ru.job4j.accidents.service.AccidentService;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@Primary
 @ThreadSafe
-public class MemAccidentService implements AccidentService {
-
-    private final AccidentRepository accidentRepository;
-    private final AccidentTypeRepository accidentTypeRepository;
-    private final RuleRepository ruleRepository;
+@AllArgsConstructor
+public class AccidentServiceJdbc implements AccidentService {
+    private final AccidentJdbcTemplate accidentRepository;
+    private final AccidentTypeJdbcTemplate accidentTypeRepository;
+    private final RuleJdbcTemplate ruleRepository;
 
     @Override
-    public Optional<Accident> create(Accident accident, String[] rIds) {
+    public Optional<Accident> save(Accident accident, String[] rIds) {
         Optional<Accident> result = Optional.empty();
         var typeOptional = accidentTypeRepository.findById(accident.getType().getId());
         var rules = ruleRepository.findSelected(rIds);
         if (typeOptional.isPresent() && !rules.isEmpty()) {
             accident.setRules(rules);
             accident.setType(typeOptional.get());
-            accidentRepository.create(accident);
+            accidentRepository.save(accident);
             result = Optional.of(accident);
         }
         return result;
@@ -53,7 +55,7 @@ public class MemAccidentService implements AccidentService {
     }
 
     @Override
-    public List<Accident> findAll() {
+    public Collection<Accident> findAll() {
         return accidentRepository.findAll();
     }
 }
