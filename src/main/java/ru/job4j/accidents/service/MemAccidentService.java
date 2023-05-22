@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.repository.AccidentRepository;
 import ru.job4j.accidents.repository.AccidentTypeRepository;
+import ru.job4j.accidents.repository.RuleRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +18,15 @@ public class MemAccidentService implements AccidentService {
 
     private final AccidentRepository accidentRepository;
     private final AccidentTypeRepository accidentTypeRepository;
+    private final RuleRepository ruleRepository;
 
     @Override
-    public Optional<Accident> create(Accident accident) {
+    public Optional<Accident> create(Accident accident, String[] rIds) {
         Optional<Accident> result = Optional.empty();
         var typeOptional = accidentTypeRepository.findById(accident.getType().getId());
-        if (typeOptional.isPresent()) {
+        var rules = ruleRepository.findSelected(rIds);
+        if (typeOptional.isPresent() && !rules.isEmpty()) {
+            accident.setRules(rules);
             accident.setType(typeOptional.get());
             accidentRepository.create(accident);
             result = Optional.of(accident);
@@ -31,10 +35,12 @@ public class MemAccidentService implements AccidentService {
     }
 
     @Override
-    public boolean update(Accident accident) {
+    public boolean update(Accident accident, String[] rIds) {
         var result = false;
         var typeOptional = accidentTypeRepository.findById(accident.getType().getId());
-        if (typeOptional.isPresent()) {
+        var rules = ruleRepository.findSelected(rIds);
+        if (typeOptional.isPresent() && !rules.isEmpty()) {
+            accident.setRules(rules);
             accident.setType(typeOptional.get());
             result = accidentRepository.update(accident);
         }

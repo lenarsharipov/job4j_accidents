@@ -15,7 +15,6 @@ import ru.job4j.accidents.service.AccidentTypeService;
 import ru.job4j.accidents.service.RuleService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -56,17 +55,6 @@ public class AccidentController {
         return CREATE_ACCIDENT_PAGE;
     }
 
-    private void addRIds(Accident accident, HttpServletRequest request) {
-        var rIds = request.getParameterValues(R_IDS);
-        var rules = new HashSet<Rule>();
-        for (var rId : rIds) {
-            var id = Integer.parseInt(rId);
-            var rule = ruleService.findById(id);
-            rules.add(rule.get());
-        }
-        accident.setRules(rules);
-    }
-
     /**
      * Save new accident.
      * @param accident Accident.
@@ -74,8 +62,8 @@ public class AccidentController {
      */
     @PostMapping("/saveAccident")
     public String save(@ModelAttribute Accident accident, HttpServletRequest request) {
-        addRIds(accident, request);
-        accidentService.create(accident);
+        var rIds = request.getParameterValues(R_IDS);
+        accidentService.create(accident, rIds);
         return REDIRECT_INDEX_PAGE;
     }
 
@@ -105,8 +93,8 @@ public class AccidentController {
 
     @PostMapping("/updateAccident")
     public String update(Model model, @ModelAttribute Accident accident, HttpServletRequest request) {
-        addRIds(accident, request);
-        if (!accidentService.update(accident)) {
+        var rIds = request.getParameterValues(R_IDS);
+        if (!accidentService.update(accident, rIds)) {
             model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
             model.addAttribute(MESSAGE, UNABLE_TO_UPDATE);
             return ERROR_404_PAGE;
