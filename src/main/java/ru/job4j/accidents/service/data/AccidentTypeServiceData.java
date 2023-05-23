@@ -1,20 +1,22 @@
-package ru.job4j.accidents.service.mem;
+package ru.job4j.accidents.service.data;
 
 import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.AccidentType;
-import ru.job4j.accidents.repository.mem.AccidentTypeMem;
+import ru.job4j.accidents.repository.data.AccidentTypeData;
 import ru.job4j.accidents.service.AccidentTypeService;
 
 import java.util.Collection;
 import java.util.Optional;
 
-@ThreadSafe
-@AllArgsConstructor
+@Primary
 @Service
-public class AccidentTypeServiceMem implements AccidentTypeService {
-    private final AccidentTypeMem accidentTypeRepository;
+@AllArgsConstructor
+@ThreadSafe
+public class AccidentTypeServiceData implements AccidentTypeService {
+    private final AccidentTypeData accidentTypeRepository;
 
     @Override
     public Collection<AccidentType> findAll() {

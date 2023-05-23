@@ -1,24 +1,26 @@
-package ru.job4j.accidents.service.hibernate;
+package ru.job4j.accidents.service.data;
 
 import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.repository.hibernate.AccidentHibernate;
-import ru.job4j.accidents.repository.hibernate.AccidentTypeHibernate;
-import ru.job4j.accidents.repository.hibernate.RuleHibernate;
+import ru.job4j.accidents.repository.data.AccidentData;
+import ru.job4j.accidents.repository.data.AccidentTypeData;
+import ru.job4j.accidents.repository.data.RuleData;
 import ru.job4j.accidents.service.AccidentService;
 
 import java.util.Collection;
 import java.util.Optional;
 
+@Primary
 @Service
-@ThreadSafe
 @AllArgsConstructor
-public class AccidentServiceHibernate implements AccidentService {
-    private final AccidentHibernate accidentRepository;
-    private final AccidentTypeHibernate accidentTypeRepository;
-    private final RuleHibernate ruleRepository;
+@ThreadSafe
+public class AccidentServiceData implements AccidentService {
+    private final AccidentData accidentRepository;
+    private final AccidentTypeData accidentTypeRepository;
+    private final RuleData ruleRepository;
 
     @Override
     public Optional<Accident> save(Accident accident, String[] rIds) {
@@ -42,7 +44,8 @@ public class AccidentServiceHibernate implements AccidentService {
         if (typeOptional.isPresent() && !rules.isEmpty()) {
             accident.setRules(rules);
             accident.setType(typeOptional.get());
-            result = accidentRepository.update(accident);
+            accidentRepository.save(accident);
+            result = true;
         }
         return result;
     }

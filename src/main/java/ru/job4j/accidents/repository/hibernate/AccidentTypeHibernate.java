@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.repository.AccidentTypeRepository;
@@ -14,7 +13,6 @@ import java.util.*;
 @ThreadSafe
 @AllArgsConstructor
 @Repository
-@Primary
 public class AccidentTypeHibernate implements AccidentTypeRepository {
     private static final Logger LOG =
             LoggerFactory.getLogger(AccidentTypeHibernate.class.getName());

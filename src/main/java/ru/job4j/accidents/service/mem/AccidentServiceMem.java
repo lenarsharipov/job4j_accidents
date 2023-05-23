@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.repository.AccidentRepository;
-import ru.job4j.accidents.repository.AccidentTypeRepository;
-import ru.job4j.accidents.repository.RuleRepository;
+import ru.job4j.accidents.repository.mem.AccidentMem;
+import ru.job4j.accidents.repository.mem.AccidentTypeMem;
+import ru.job4j.accidents.repository.mem.RuleMem;
 import ru.job4j.accidents.service.AccidentService;
 
 import java.util.Collection;
@@ -17,9 +17,9 @@ import java.util.Optional;
 @ThreadSafe
 public class AccidentServiceMem implements AccidentService {
 
-    private final AccidentRepository accidentRepository;
-    private final AccidentTypeRepository accidentTypeRepository;
-    private final RuleRepository ruleRepository;
+    private final AccidentMem accidentRepository;
+    private final AccidentTypeMem accidentTypeRepository;
+    private final RuleMem ruleRepository;
 
     @Override
     public Optional<Accident> save(Accident accident, String[] rIds) {
