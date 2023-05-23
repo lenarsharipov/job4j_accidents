@@ -1,24 +1,26 @@
-package ru.job4j.accidents.service.jdbc;
+package ru.job4j.accidents.service.hibernate;
 
 import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.repository.jdbc.AccidentJdbcTemplate;
-import ru.job4j.accidents.repository.jdbc.AccidentTypeJdbcTemplate;
-import ru.job4j.accidents.repository.jdbc.RuleJdbcTemplate;
+import ru.job4j.accidents.repository.hibernate.AccidentHibernate;
+import ru.job4j.accidents.repository.hibernate.AccidentTypeHibernate;
+import ru.job4j.accidents.repository.hibernate.RuleHibernate;
 import ru.job4j.accidents.service.AccidentService;
 
 import java.util.Collection;
 import java.util.Optional;
 
+@Primary
 @Service
 @ThreadSafe
 @AllArgsConstructor
-public class AccidentServiceJdbc implements AccidentService {
-    private final AccidentJdbcTemplate accidentRepository;
-    private final AccidentTypeJdbcTemplate accidentTypeRepository;
-    private final RuleJdbcTemplate ruleRepository;
+public class AccidentServiceHibernate implements AccidentService {
+    private final AccidentHibernate accidentRepository;
+    private final AccidentTypeHibernate accidentTypeRepository;
+    private final RuleHibernate ruleRepository;
 
     @Override
     public Optional<Accident> save(Accident accident, String[] rIds) {
