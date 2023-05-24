@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.job4j.accidents.model.Rule;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Primary
@@ -22,13 +22,5 @@ public interface RuleData extends CrudRepository<Rule, Integer> {
     )
     Collection<Rule> findAll();
 
-    default Set<Rule> findSelected(String[] rIds) {
-        Set<Rule> rules = new HashSet<>();
-        for (var rId : rIds) {
-            var id = Integer.parseInt(rId);
-            var rule = findById(id);
-            rule.ifPresent(rules::add);
-        }
-        return rules;
-    }
+    Set<Rule> findByIdIn(List<Integer> rIds);
 }
