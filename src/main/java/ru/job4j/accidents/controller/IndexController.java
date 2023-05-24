@@ -13,7 +13,7 @@ import ru.job4j.accidents.service.AccidentService;
 public class IndexController {
 
     private final AccidentService accidentService;
-    private static final String USER_VALUE = "Lenar Sharipov";
+    private static final String USER_VALUE = "TEST USER";
     private static final String USER_ATTRIBUTE = "user";
     private static final String ACCIDENTS_ATTRIBUTE = "accidents";
     private static final String INDEX_PAGE = "index";
