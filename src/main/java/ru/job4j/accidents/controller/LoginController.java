@@ -40,8 +40,4 @@ public class LoginController {
         return "redirect:/login?logout=true";
     }
 
-    @GetMapping("/register")
-    public String registerPage() {
-        return "register";
-    }
 }
