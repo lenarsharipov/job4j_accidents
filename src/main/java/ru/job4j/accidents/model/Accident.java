@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public class Accident {
             joinColumns = {@JoinColumn(name = "accident_id")},
             inverseJoinColumns = {@JoinColumn(name = "rule_id")}
     )
-    private Set<Rule> rules;
+    private Set<Rule> rules = new HashSet<>();
 
     private String text;
     private String address;
