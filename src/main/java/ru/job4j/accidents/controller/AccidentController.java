@@ -2,6 +2,7 @@ package ru.job4j.accidents.controller;
 
 import lombok.AllArgsConstructor;
 import net.jcip.annotations.ThreadSafe;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,16 +29,15 @@ public class AccidentController {
     private final AccidentTypeService accidentTypeService;
     private final RuleService ruleService;
     private static final String MESSAGE = "message";
-    private static final String USER_VALUE = "Lenar Sharipov";
     private static final String UNABLE_TO_UPDATE = "UNABLE TO UPDATE SPECIFIED ACCIDENT";
     private static final String UNABLE_TO_FIND_BY_ID = "UNABLE TO FIND ACCIDENT BY SPECIFIED ID";
     private static final String ERROR_404_PAGE = "404";
     private static final String REDIRECT_INDEX_PAGE = "redirect:/index";
     private static final String CREATE_ACCIDENT_PAGE = "createAccident";
     private static final String UPDATE_ACCIDENT_PAGE = "updateAccident";
-    private static final String ACCIDENT_ATTRIBUTE = "accident";
-    private static final String USER_ATTRIBUTE = "user";
-    private static final String TYPES_ATTRIBUTE = "types";
+    private static final String ACCIDENT = "accident";
+    private static final String USER = "user";
+    private static final String TYPES = "types";
     private static final String RULES = "rules";
     private static final String R_IDS = "rIds";
     private static final String SELECTED_TYPE_ID = "selectedTypeId";
@@ -50,8 +50,9 @@ public class AccidentController {
     @GetMapping("/createAccident")
     public String viewCreateAccident(Model model) {
         model.addAttribute(RULES, ruleService.findAll());
-        model.addAttribute(TYPES_ATTRIBUTE, accidentTypeService.findAll());
-        model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
+        model.addAttribute(TYPES, accidentTypeService.findAll());
+        var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute(USER, user);
         return CREATE_ACCIDENT_PAGE;
     }
 
@@ -76,18 +77,18 @@ public class AccidentController {
     @GetMapping("/formUpdateAccident")
     public String viewUpdate(@RequestParam("id") int id, Model model) {
         var accidentOptional = accidentService.findById(id);
+        var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute(USER, user);
         if (accidentOptional.isEmpty()) {
-            model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
             model.addAttribute(MESSAGE, UNABLE_TO_FIND_BY_ID);
             return ERROR_404_PAGE;
         }
         var selectedIds = getRIds(accidentOptional.get().getRules());
         model.addAttribute(SELECTED_R_IDS, selectedIds);
         model.addAttribute(RULES, ruleService.findAll());
-        model.addAttribute(TYPES_ATTRIBUTE, accidentTypeService.findAll());
+        model.addAttribute(TYPES, accidentTypeService.findAll());
         model.addAttribute(SELECTED_TYPE_ID, accidentOptional.get().getType().getId());
-        model.addAttribute(ACCIDENT_ATTRIBUTE, accidentOptional.get());
-        model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
+        model.addAttribute(ACCIDENT, accidentOptional.get());
         return UPDATE_ACCIDENT_PAGE;
     }
 
@@ -96,8 +97,9 @@ public class AccidentController {
                          @ModelAttribute Accident accident,
                          HttpServletRequest request) {
         var rIds = request.getParameterValues(R_IDS);
+        var user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        model.addAttribute(USER, user);
         if (!accidentService.update(accident, rIds)) {
-            model.addAttribute(USER_ATTRIBUTE, USER_VALUE);
             model.addAttribute(MESSAGE, UNABLE_TO_UPDATE);
             return ERROR_404_PAGE;
         }
