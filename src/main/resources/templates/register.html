@@ -19,6 +19,9 @@
     <a href="/login">Sign in</a>
     <main class="form-signing">
       <h1 class="h3 mb-3 fw-normal">Registration</h1>
+      <div th:if="${not #lists.isEmpty(errorMessage)}" class="alert alert-danger" role="alert">
+        <span th:text="${errorMessage}"></span>
+      </div>
       <form th:action="@{/register}" method="post">
         <div class="mb-3">
           <label for="username">Username
