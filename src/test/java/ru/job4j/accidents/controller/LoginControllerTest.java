@@ -46,4 +46,5 @@ class LoginControllerTest {
                 .andExpect(model().attribute("errorMessage", errorMessage))
                 .andExpect(view().name("login"));
     }
+
 }
