@@ -18,7 +18,7 @@ import java.util.Properties;
 @EnableTransactionManagement */
 public class HbmConfig {
 
-    @Bean
+    /*@Bean
     public LocalSessionFactoryBean sessionFactory(
             @Value("${hibernate.dialect}") String dialect, DataSource ds) {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
@@ -36,4 +36,7 @@ public class HbmConfig {
         tx.setSessionFactory(sf);
         return tx;
     }
+
+
+     */
 }
