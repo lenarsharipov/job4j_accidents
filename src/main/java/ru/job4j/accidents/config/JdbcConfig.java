@@ -15,8 +15,8 @@ import javax.sql.DataSource;
 @PropertySource говорит Spring считать файл.
 Далее настройки можно получить через аннотацию @Value.
 */
-@PropertySource("classpath:db.properties")
-@EnableTransactionManagement
+/* @PropertySource("classpath:db.properties")
+@EnableTransactionManagement */
 public class JdbcConfig {
 
     /* Метод ds загружает пул соединений. */

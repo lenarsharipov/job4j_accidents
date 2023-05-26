@@ -51,4 +51,5 @@ class AccidentControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("updateAccident"));
     }
+
 }
