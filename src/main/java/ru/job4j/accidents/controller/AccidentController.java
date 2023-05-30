@@ -83,12 +83,13 @@ public class AccidentController {
             model.addAttribute(MESSAGE, UNABLE_TO_FIND_BY_ID);
             return ERROR_404_PAGE;
         }
-        var selectedIds = getRIds(accidentOptional.get().getRules());
+        var accident = accidentOptional.get();
+        var selectedIds = getRIds(accident.getRules());
         model.addAttribute(SELECTED_R_IDS, selectedIds);
         model.addAttribute(RULES, ruleService.findAll());
         model.addAttribute(TYPES, accidentTypeService.findAll());
-        model.addAttribute(SELECTED_TYPE_ID, accidentOptional.get().getType().getId());
-        model.addAttribute(ACCIDENT, accidentOptional.get());
+        model.addAttribute(SELECTED_TYPE_ID, accident.getType().getId());
+        model.addAttribute(ACCIDENT, accident);
         return UPDATE_ACCIDENT_PAGE;
     }
 
