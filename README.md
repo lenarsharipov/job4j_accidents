@@ -51,7 +51,6 @@
 
 
 </ul>
-![001_authorization.png](src%2Fmain%2Fresources%2Fstatic.screenshots%2F001_authorization.png)
 <h2>Contributing</h2>
 <p>Contributions to the Job4j Accidents project are welcome! If you have any ideas, improvements, or bug fixes, feel free to submit a pull request. Please make sure to follow the existing code style and provide clear commit messages.</p>
 <h2>License</h2>
