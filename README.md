@@ -1,6 +1,6 @@
-<h1>Job4j Accidents</h1>
+<h1>Traffic Accidents</h1>
 
-<p>Job4j Accidents is a web application that allows users to manage and track traffic accidents. It provides a platform for users to report accidents, view accident details, and perform various operations related to accidents, such as adding/editing accident records and assigning accident types. This project is built using the Java programming language and the Spring Framework.</p>
+<p>Traffic Accidents is a web application that allows users to manage and track traffic accidents. It provides a platform for users to report accidents, view accident details, and perform various operations related to accidents, such as adding/editing accident records and assigning accident types. This project is built using the Java programming language and the Spring Framework.</p>
 
 <h2>Table of Contents</h2>
 
@@ -41,11 +41,11 @@
 
 <h2>Getting Started</h2>
 
-<p>To get started with the Job4j Accidents project, follow these steps:</p>
+<p>To get started with the Traffic Accidents project, follow these steps:</p>
 
 <ol>
-  <li>Clone the repository: <code>git clone https://github.com/lenarsharipov/job4j_accidents.git</code></li>
-  <li>Navigate to the project directory: <code>cd job4j_accidents</code></li>
+  <li>Clone the repository: <code>git clone https://github.com/lenarsharipov/traffic_accidents.git</code></li>
+  <li>Navigate to the project directory: <code>cd traffic_accidents</code></li>
   <li>Configure the database connection properties in the <code>src/main/resources/application.properties</code> file.</li>
   <li>Build the project using Maven: <code>mvn clean install</code></li>
   <li>Run the application: <code>mvn spring-boot:run</code></li>
