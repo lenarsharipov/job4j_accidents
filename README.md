@@ -94,5 +94,3 @@
 <p>This project is licensed under the <a href="LICENSE">MIT License</a>.</p>
 
 <hr>
-
-<p>Please note that this is a sample README file, and you may need to customize it based on the specifics of your project.</p>
